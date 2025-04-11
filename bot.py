@@ -1,24 +1,27 @@
 import telebot
-from flask import Flask, request
+import os
 
-TOKEN = '7528058827:AAF8uaUentzGSGUCa_DvjEuwal6ew7tbUd0'
+# دریافت توکن از متغیر محیطی (در Render تنظیم خواهی کرد)
+TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+
+# ایجاد نمونه بات
 bot = telebot.TeleBot(TOKEN)
-app = Flask(__name__)
 
-@app.route('/webhook', methods=['POST'])
-def webhook():
-    json_str = request.get_data().decode('UTF-8')
-    update = telebot.types.Update.de_json(json_str)
-    bot.process_new_updates([update])
-    return 'OK', 200
+# فرمان استارت
+@bot.message_handler(commands=['start'])
+def send_welcome(message):
+    bot.reply_to(message, "سلام! به GEmploymentBot خوش آمدید. 👋")
 
-@bot.message_handler(content_types=['photo'])
-def handle_photo(message):
-    bot.reply_to(message, "عکس شما دریافت شد!")
+# اجرای دائمی ربات
+bot.polling()
+
+
+
+bot = telebot.TeleBot(TOKEN)
 
 @bot.message_handler(commands=['start'])
-def start(message):
-    bot.reply_to(message, "سلام! ربات آماده است.")
+def start_message(message):
+    bot.reply_to(message, "سلام! من وصل شدم 🎉")
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+bot.polling()
+
