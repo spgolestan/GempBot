@@ -14,6 +14,17 @@ try:
     print("✅ اتصال به پایگاه داده موفقیت‌آمیز بود!")
 except Exception as e:
     print("❌ خطا در اتصال به پایگاه داده:", e)
+# ایجاد جدول اگر وجود نداشته باشد
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS applicants (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255),
+        contact VARCHAR(255),
+        position VARCHAR(255)
+    );
+""")
+conn.commit()
+print("✅ جدول applicants با موفقیت ایجاد شد!")
 import telebot
 import os
 from flask import Flask
