@@ -1,3 +1,19 @@
+import psycopg2
+import config  # فایل تنظیمات دیتابیس که قبلاً ساختیم
+
+# ایجاد اتصال به پایگاه داده
+try:
+    conn = psycopg2.connect(
+        dbname=config.DB_NAME,
+        user=config.DB_USER,
+        password=config.DB_PASSWORD,
+        host=config.DB_HOST,
+        port=config.DB_PORT
+    )
+    cursor = conn.cursor()
+    print("✅ اتصال به پایگاه داده موفقیت‌آمیز بود!")
+except Exception as e:
+    print("❌ خطا در اتصال به پایگاه داده:", e)
 import telebot
 import os
 from flask import Flask
