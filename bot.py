@@ -14,6 +14,27 @@ try:
     print("✅ اتصال به پایگاه داده موفقیت‌آمیز بود!")
 except Exception as e:
     print("❌ خطا در اتصال به پایگاه داده:", e)
+@bot.message_handler(commands=['add'])
+def add_user(message):
+    user_name = message.chat.first_name
+    user_id = message.chat.id
+    try:
+        cursor.execute("INSERT INTO applicants (name, contact, position) VALUES (%s, %s, %s)", (user_name, str(user_id), "Test Position"))
+        conn.commit()
+        bot.reply_to(message, "✅ اطلاعات شما با موفقیت در پایگاه داده ذخیره شد!")
+    except Exception as e:
+        bot.reply_to(message, f"❌ خطا در ثبت اطلاعات: {e}")
+@bot.message_handler(commands=['show'])
+def show_user(message):
+    try:
+        cursor.execute("SELECT * FROM applicants WHERE contact = %s", (str(message.chat.id),))
+        result = cursor.fetchone()
+        if result:
+            bot.reply_to(message, f"✅ اطلاعات شما: {result}")
+        else:
+            bot.reply_to(message, "⚠️ اطلاعاتی در پایگاه داده یافت نشد!")
+    except Exception as e:
+        bot.reply_to(message, f"❌ خطا در دریافت اطلاعات: {e}")
 import telebot
 import os
 from flask import Flask
