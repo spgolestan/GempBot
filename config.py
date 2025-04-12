@@ -1,5 +1,5 @@
 DB_NAME = "gemppostgres1"
 DB_USER = "gemppostgres1_user"
 DB_PASSWORD = "SFD5itn1HGIAW9gaTcEUeoMXPdb1iENS"
-DB_HOST = "postgresql://gemppostgres1_user:SFD5itn1HGIAW9gaTcEUeoMXPdb1iENS@dpg-cvtdgqc9c44c738kkc4g-a.oregon-postgres.render.com/gemppostgres1"
+DB_HOST = "dpg-cvtdgqc9c44c738kkc4g-a.oregon-postgres.render.com"
 DB_PORT = "5432"

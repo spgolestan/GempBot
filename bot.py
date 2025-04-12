@@ -14,6 +14,24 @@ try:
     print("✅ اتصال به پایگاه داده موفقیت‌آمیز بود!")
 except Exception as e:
     print("❌ خطا در اتصال به پایگاه داده:", e)
+import telebot
+import os
+from flask import Flask
+import threading
+
+# دریافت توکن از متغیر محیطی
+TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+
+if TOKEN is None:
+    raise ValueError("TOKEN is not set! Please configure the environment variable.")
+
+# ایجاد نمونه بات
+bot = telebot.TeleBot(TOKEN)
+
+# فرمان استارت
+@bot.message_handler(commands=['start'])
+def send_welcome(message):
+    bot.reply_to(message, "سلام! به GEmploymentBot خوش آمدید. 👋")
 @bot.message_handler(commands=['add'])
 def add_user(message):
     user_name = message.chat.first_name
@@ -35,24 +53,7 @@ def show_user(message):
             bot.reply_to(message, "⚠️ اطلاعاتی در پایگاه داده یافت نشد!")
     except Exception as e:
         bot.reply_to(message, f"❌ خطا در دریافت اطلاعات: {e}")
-import telebot
-import os
-from flask import Flask
-import threading
 
-# دریافت توکن از متغیر محیطی
-TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-
-if TOKEN is None:
-    raise ValueError("TOKEN is not set! Please configure the environment variable.")
-
-# ایجاد نمونه بات
-bot = telebot.TeleBot(TOKEN)
-
-# فرمان استارت
-@bot.message_handler(commands=['start'])
-def send_welcome(message):
-    bot.reply_to(message, "سلام! به GEmploymentBot خوش آمدید. 👋")
 
 # تنظیم Flask برای بررسی وضعیت ربات
 app = Flask(__name__)
