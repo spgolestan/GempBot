@@ -3,6 +3,7 @@ import telebot
 import os
 from flask import Flask
 import threading
+import config  # بارگیری تنظیمات پایگاه داده از config.py
 
 # دریافت اطلاعات پایگاه داده از متغیرهای محیطی
 DB_NAME = os.getenv("DB_NAME")
