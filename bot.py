@@ -51,8 +51,10 @@ except Exception as e:
     conn.rollback()
     print(f"❌ خطا در ایجاد جدول: {e}")
 finally:
-    pool.putconn(conn)  # اتصال را برگردان
-    cursor.close()
+ cursor.close()
+ pool.putconn(conn)
+# اتصال را برگردان
+   
 # دریافت توکن تلگرام
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 if TOKEN is None or TOKEN.strip() == "":
@@ -84,8 +86,9 @@ def show_jobs(message):
     except Exception as e:
         handle_error(message.chat.id, str(e))
     finally:
-        pool.putconn(conn)
-        cursor.close()# فرآیند ثبت‌نام کاربران
+        cursor.close()  # ابتدا cursor را ببند
+        pool.putconn(conn)  # سپس اتصال را برگردان
+ # فرآیند ثبت‌نام کاربران
 @bot.message_handler(commands=['register'])
 def register_user(message):
     bot.send_message(message.chat.id, "📝 لطفاً نام و نام خانوادگی خود را وارد کنید:")
@@ -123,9 +126,9 @@ def save_user(message, full_name, age, education):
     except Exception as e:
         conn.rollback()
         handle_error(message.chat.id, str(e))
-finally:
-    cursor.close()  # ابتدا cursor را ببند
-    pool.putconn(conn)  # سپس اتصال را برگردان    
+    finally:
+        cursor.close()  # ابتدا cursor را ببند
+        pool.putconn(conn)  # سپس اتصال را برگردان   
 # تنظیم Flask برای بررسی وضعیت ربات
 app = Flask(__name__)
 
